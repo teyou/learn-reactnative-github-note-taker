@@ -5,9 +5,12 @@ import React, {
     Component,
     StyleSheet,
     TextInput,
-    TouchableHighlight
+    TouchableHighlight,
+    ActivityIndicatorIOS
 } from 'react-native';
 
+import api from '../Utils/api';
+import Dashboard from './Dashboard';
 
 class Main extends Component {
 
@@ -32,11 +35,38 @@ class Main extends Component {
           isLoading: true
         });
 
+        api.getBio(this.state.username)
+          .then((res) =>{
+            console.log('bio');
+            console.log(res);
+            if(res.message === 'Not Found'){
+              this.setState({
+                error: 'User not found',
+                isLoading: false
+              })
+            }
+            else{
+              this.props.navigator.push({
+                title: res.name || "Select an Option",
+                component : Dashboard,
+                passProps: {userInfo : res}
+              });
+              this.setState({
+                isLoading: false,
+                error:false,
+                username: ''
+              })
+            }
+          });
         //fetch data from Github
         //reroute to the next passing that github information
     }
 
     render() {
+        var showErr = (
+          this.state.error ? <Text> {this.state.error} </Text> : <View></View>
+        );
+
         return (
             <View style={styles.mainContainer}>
                 <Text style={styles.title}>Search for a Github User</Text>
@@ -50,6 +80,11 @@ class Main extends Component {
                   underlayColor="white">
                     <Text style={styles.buttonText}> SEARCH </Text>
                 </TouchableHighlight>
+                <ActivityIndicatorIOS
+                animating={this.state.isLoading}
+                color="#111"
+                size="large"/>
+                {showErr}
             </View>
         );
     }

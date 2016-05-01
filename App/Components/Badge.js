@@ -1,7 +1,8 @@
-import React,{
+import React, {
     Text,
     View,
     Image,
+    Component,
     StyleSheet
 } from 'react-native';
 
@@ -35,10 +36,10 @@ class Badge extends Component{
     render(){
         return (
           <View style={styles.container}>
-            <Image style={styles.iamge} source={{uri: this.porps.userInfo.avatar_url}} />
+            <Image style={styles.image} source={{uri: this.props.userInfo.avatar_url}} />
             <Text style={styles.name}> {this.props.userInfo.name} </Text>
             <Text style={styles.handle}> {this.props.userInfo.login} </Text>
-          </View>  
+          </View>
         );
     }
 };

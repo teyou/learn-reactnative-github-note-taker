@@ -47,7 +47,7 @@ class Main extends Component {
             }
             else{
               this.props.navigator.push({
-                title: res.name || "Select an Option",
+                title: res.login || "Select an Option",
                 component : Dashboard,
                 passProps: {userInfo : res}
               });

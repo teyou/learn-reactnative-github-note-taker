@@ -1,29 +1,29 @@
 
 import React, {
-    Text,
-    View,
-    Image,
-    Component,
-    StyleSheet,
-    TextInput,
-    TouchableHighlight
+  Text,
+  View,
+  Image,
+  Component,
+  StyleSheet,
+  TextInput,
+  TouchableHighlight
 } from 'react-native';
 
 import api from '../Utils/api';
 import Profile from './Profile';
 import Repositories from './Repositories';
-
+import Notes from './Notes';
 
 var styles = StyleSheet.create({
-  container: {marginTop: 65, flex: 1},
-  image: {height: 350},
-  buttonText:{fontSize: 24, color: 'white', alignSelf: 'center'}
+  container: { marginTop: 65, flex: 1 },
+  image: { height: 350 },
+  buttonText: { fontSize: 24, color: 'white', alignSelf: 'center' }
 });
 
 
-class Dashboard extends Component{
+class Dashboard extends Component {
 
-  makeBackground(btn){
+  makeBackground(btn) {
     var obj = {
       flexDirection: 'row',
       alignSelf: 'stretch',
@@ -31,68 +31,82 @@ class Dashboard extends Component{
       flex: 1
     }
 
-    if(btn === 0){
+    if (btn === 0) {
       obj.backgroundColor = '#48BBEC';
-    } else if (btn === 1){
+    } else if (btn === 1) {
       obj.backgroundColor = '#E77AAE';
-    } else{
+    } else {
       obj.backgroundColor = '#758BF4';
     }
 
     return obj;
   }
 
-  goToProfile(){
+  goToProfile() {
     console.log('goToProfile');
     this.props.navigator.push({
       title: 'Profile Page',
-      component : Profile,
-      passProps: {userInfo : this.props.userInfo}
+      component: Profile,
+      passProps: { userInfo: this.props.userInfo }
     });
   }
 
-  goToRepos(){
+  goToRepos() {
     console.log('goToRepos');
-    
+
     api.getRepos(this.props.userInfo.login)
       .then((res) => {
-        console.log('getRepos',res);
-        
+        console.log('getRepos', res);
+
         this.props.navigator.push({
           title: 'Repos Page',
-          component : Repositories,
-          passProps: {userInfo : this.props.userInfo, repos: res}
-        });   
+          component: Repositories,
+          passProps: { userInfo: this.props.userInfo, repos: res }
+        });
       });
-    
+
   }
 
-  goToNotes(){
+  goToNotes() {
     console.log('goToNotes');
+
+    api.getNotes(this.props.userInfo.login)
+      .then((res) => {
+        res = res || {};
+        this.props.navigator.push({
+          title: 'Notes',
+          component: Notes,
+          passProps: {
+            notes: res,
+            userInfo: this.props.userInfo
+          }
+        })
+      })
+
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <View style={styles.container}>
-        <Image source={{uri: this.props.userInfo.avatar_url}} style={styles.image} />
+        <Image source={{ uri: this.props.userInfo.avatar_url }} style={styles.image} />
 
         <TouchableHighlight
-          style={this.makeBackground(0)}
-          onPress={this.goToProfile.bind(this)}
+          style={this.makeBackground(0) }
+          onPress={this.goToProfile.bind(this) }
           underlayColor="#88D4F5">
           <Text style={styles.buttonText}> View Profile</Text>
         </TouchableHighlight>
 
         <TouchableHighlight
-          style={this.makeBackground(1)}
-          onPress={this.goToRepos.bind(this)}
+          style={this.makeBackground(1) }
+          onPress={this.goToRepos.bind(this) }
           underlayColor="#88D4F5">
           <Text style={styles.buttonText}> View Repos</Text>
         </TouchableHighlight>
 
         <TouchableHighlight
-          style={this.makeBackground(2)}
-          onPress={this.goToNotes.bind(this)}
+          style={this.makeBackground(2) }
+          onPress={this.goToNotes.bind(this) }
           underlayColor="#88D4F5">
           <Text style={styles.buttonText}> View Notes</Text>
         </TouchableHighlight>

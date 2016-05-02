@@ -4,11 +4,12 @@ import React, {
     Text,
     View,
     ListView,
-    TouchableHightlight
+    TextInput,
+    TouchableHighlight
 } from 'react-native';
 
 import api from '../Utils/api';
-import Separator from './Helpers/Sepaator';
+import Separator from './Helpers/Separator';
 import Badge from './Badge';
 
 
@@ -31,32 +32,32 @@ class Notes extends Component {
             error: ''
         }
     }
-    
-    handleChange(e){
+
+    handleChange(e) {
         this.setState({
-            note : e.nativeEvent.text
+            note: e.nativeEvent.text
         });
     }
-    
-    handleSubmit(){
+
+    handleSubmit() {
         var note = this.state.note;
         this.setState({
             note: ''
         });
-        
+
         api.addNote(this.props.userInfo.login, note)
             .then((data) => {
                 api.getNotes(this.props.userInfo.login)
-                    .then((data) =>{
-                        this.setState({ dataSource: this.ds.cloneWithRows(data)})
+                    .then((data) => {
+                        this.setState({ dataSource: this.ds.cloneWithRows(data) })
                     })
-            }).catch((err) =>{
-                console.error('Request failed',err);
-                this.setState({error});
+            }).catch((err) => {
+                console.error('Request failed', err);
+                this.setState({ error });
             });
     }
-    
-    renderRow(rowData){
+
+    renderRow(rowData) {
         return (
             <View>
                 <View style={styles.rowContainer}>
@@ -66,40 +67,41 @@ class Notes extends Component {
             </View>
         )
     }
-    
-    footer(){
-        return(
-            <View style={styles.footContainer}>
+
+    footer() {
+        return (
+            <View style={styles.footerContainer}>
                 <TextInput
                     style={styles.searchInput}
                     value={this.state.note}
-                    onChange={this.handleChange.bind(this)}
+                    onChange={this.handleChange.bind(this) }
                     placeholder="New Note" />
-                <TouchableHightlight
+                <TouchableHighlight
                     style={styles.button}
-                    onPress={this.handleSubmit.bind(this)}
+                    onPress={this.handleSubmit.bind(this) }
                     underlayColor="#88D4F5">
-                        <Text style={styles.buttonText}> Submit </Text>
-                </TouchableHightlight>
-                    
+                    <Text style={styles.buttonText}> Submit </Text>
+                </TouchableHighlight>
             </View>
         )
     }
-    
+
     render() {
-        <View style={styles.container}>
-            <ListView
-                dataSource={this.state.dataSource}
-                render={this.renderRow}
-                renderHeader={ () => <Badge userInfo={this.props.userInfo}/> } />
-            {this.footer()}
-        </View>
+        return (
+            <View style={styles.container}>
+                <ListView
+                    dataSource={this.state.dataSource}
+                    renderRow={this.renderRow}
+                    renderHeader={ () => <Badge userInfo={this.props.userInfo}/> } />
+                {this.footer()}
+            </View>
+        )
     };
 };
 
 Notes.propTypes = {
-    userInfo : React.PropTypes.object.isRequired,
-    notes : React.PropTypes.object.isRequired
+    userInfo: React.PropTypes.object.isRequired,
+    notes: React.PropTypes.object.isRequired
 }
 
 module.exports = Notes;

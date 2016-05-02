@@ -22,13 +22,13 @@ var styles = StyleSheet.create({
 class Repositories extends Component {
     openPage(url) {
         console.log('url', url);
-        
+
         this.props.navigator.push({
-            component : MyWebView,
-            title : 'Web View',
-            passProps : {url}
+            component: MyWebView,
+            title: 'Web View',
+            passProps: { url }
         });
-        
+
     }
 
 

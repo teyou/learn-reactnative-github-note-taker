@@ -93,7 +93,7 @@ class Notes extends Component {
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     renderHeader={ () => <Badge userInfo={this.props.userInfo}/> } />
-                {this.footer()}
+                {this.footer() }
             </View>
         )
     };

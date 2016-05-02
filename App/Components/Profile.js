@@ -11,12 +11,12 @@ import Badge from './Badge';
 import Separator from './Helpers/Separator';
 
 var styles = StyleSheet.create({
-    container : {
+    container: {
         flex: 1
     },
-    buttonText : {
-        alignSelf : 'center',
-        fontSize : 18,
+    buttonText: {
+        alignSelf: 'center',
+        fontSize: 18,
         color: 'white',
     },
     rowContainer: {
@@ -26,29 +26,29 @@ var styles = StyleSheet.create({
         color: '#48BBEC',
         fontSize: 16
     },
-    rowContent : {
-        fontSize : 19
+    rowContent: {
+        fontSize: 19
     }
 });
 
-class Profile extends Component{
-    
-    getRowTitle(user,item){
-        item = (item === 'public_repos') ? item.replace('_',' ') : item;
+class Profile extends Component {
+
+    getRowTitle(user, item) {
+        item = (item === 'public_repos') ? item.replace('_', ' ') : item;
         return item[0] ? item[0].toUpperCase() + item.slice(1) : item;
     }
-    
-    render(){
+
+    render() {
         let userInfo = this.props.userInfo;
-        let topicArr = ['company','location','followers','following','email','bio','public_repos'];
-        let list = topicArr.map((item,index) =>{ 
-            if(!userInfo[item]){
+        let topicArr = ['company', 'location', 'followers', 'following', 'email', 'bio', 'public_repos'];
+        let list = topicArr.map((item, index) => {
+            if (!userInfo[item]) {
                 return <View key={index} />
-            } else{
+            } else {
                 return (
                     <View key={index}>
                         <View style={styles.rowContainer}>
-                            <Text style={styles.rowTitle}>{this.getRowTitle(userInfo,item)}</Text>
+                            <Text style={styles.rowTitle}>{this.getRowTitle(userInfo, item) }</Text>
                             <Text style={styles.rowContent}>{userInfo[item]}</Text>
                         </View>
                         <Separator />
@@ -56,19 +56,19 @@ class Profile extends Component{
                 )
             }
         })
-        
+
         return (
-          <ScrollView style={styles.container}>
-            <Badge userInfo={userInfo} />
-            {list}
-          </ScrollView>  
+            <ScrollView style={styles.container}>
+                <Badge userInfo={userInfo} />
+                {list}
+            </ScrollView>
         );
-        
+
     }
 };
 
 Profile.propTypes = {
-    userInfo : React.PropTypes.object.isRequired
+    userInfo: React.PropTypes.object.isRequired
 };
 
 module.exports = Profile;

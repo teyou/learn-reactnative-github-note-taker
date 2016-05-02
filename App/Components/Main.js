@@ -37,8 +37,7 @@ class Main extends Component {
 
         api.getBio(this.state.username)
           .then((res) =>{
-            console.log('bio');
-            console.log(res);
+            
             if(res.message === 'Not Found'){
               this.setState({
                 error: 'User not found',

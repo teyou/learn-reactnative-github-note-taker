@@ -11,6 +11,19 @@ var api = {
     var url = `https://api.github.com/users/${username}/repos`;
     console.log('getRepos,url:' + url);
     return fetch(url).then((res)=> res.json());
+  },
+  getNotes(username){
+    username = username.toLowerCase().trim();
+    var url = `https://github-saver-teyou.firebaseio.com/${username}.json`;
+    console.log('getNotes,url:' + url);
+    return fetch(url).then((res)=> res.json());
+  },
+  addNote(username, note){
+    username = username.toLowerCase().trim();
+    var url = `https://github-saver-teyou.firebaseio.com/${username}.json`;
+    console.log('addNote,url:' + url, note);
+    return fetch(url, { method: 'post', body: JSON.stringify(note)})
+            .then((res)=> res.json());
   }
 };
 
